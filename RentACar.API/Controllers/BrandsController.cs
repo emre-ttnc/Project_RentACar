@@ -1,0 +1,31 @@
+﻿using Application.Features.Commands.BrandCommands;
+using Application.Features.Queries.BrandQueries;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+
+namespace RentACar.API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class BrandsController : ControllerBase
+    {
+        private readonly IMediator _mediatr;
+
+        public BrandsController(IMediator mediatr)
+        {
+            _mediatr = mediatr;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(CreateBrandCommand request) =>
+            Created("", await _mediatr.Send(request));
+
+        [HttpDelete]
+        public async Task<IActionResult> Remove(RemoveBrandCommand request) =>
+            Ok(await _mediatr.Send(request));
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery]GetAllBrandsQuery request) =>
+            Ok(await _mediatr.Send(request));
+    }
+}
