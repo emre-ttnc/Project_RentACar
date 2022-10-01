@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mime;
-using System.Text.Json;
 
 namespace RentACar.API.Middlewares;
 
@@ -22,13 +20,14 @@ public class ExceptionHandlerMiddleWare
         }
         catch (Exception ex)
         {
+            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             context.Response.ContentType = MediaTypeNames.Application.Json;
-            await context.Response.WriteAsync(JsonSerializer.Serialize(new
+            await context.Response.WriteAsJsonAsync(new
             {
-                StatusCode = (int)HttpStatusCode.BadRequest,
+                StatusCode = context.Response.StatusCode,
                 Message = ex.Message,
                 Title = "Something went wrong!"
-            }));
+            });
         }
     }
 }

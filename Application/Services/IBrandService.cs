@@ -14,7 +14,7 @@ public interface IBrandService
     #endregion
 
     #region Queries
-    Task<BrandListModel> GetAllBrandsAsync(int pageNo, int pageSize);
+    Task<BrandListModel> GetAll();
     Task<Brand> GetSingleBrandAsync(string brandId);
     #endregion
 }

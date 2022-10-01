@@ -2,7 +2,7 @@
 
 public enum CarState
 {
-    Free,
+    Available,
     InCustomer,
     OutOfService
 }

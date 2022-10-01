@@ -2,7 +2,7 @@
 
 namespace Application.Models;
 
-public class BrandListModel : BasePageableModel
+public class BrandListModel
 {
     public ICollection<BrandListDTO> Items { get; set; } = new List<BrandListDTO>();
 }

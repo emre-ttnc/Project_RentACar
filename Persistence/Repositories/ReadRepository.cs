@@ -18,7 +18,10 @@ public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity
 
     public DbSet<T> Table => _context.Set<T>();
 
-    public IQueryable<T?> GetAll(int page, int pageSize, out int totalCount, out int pageCount, out bool hasPrevious, out bool hasNext, bool tracking = true)
+    public IQueryable<T?> GetAll(bool tracking = true) =>
+        tracking ? Table.AsQueryable() : Table.AsNoTracking().AsQueryable();
+
+    public IQueryable<T?> GetAllWithPaginate(int page, int pageSize, out int totalCount, out int pageCount, out bool hasPrevious, out bool hasNext, bool tracking = true)
     {
         totalCount = Table.Count();
         pageCount = totalCount > pageSize ? totalCount / pageSize + 1 : 1;

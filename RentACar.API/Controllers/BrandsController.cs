@@ -24,8 +24,12 @@ namespace RentACar.API.Controllers
         public async Task<IActionResult> Remove(RemoveBrandCommand request) =>
             Ok(await _mediatr.Send(request));
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery]GetAllBrandsQuery request) =>
+        [HttpGet(Name = nameof(GetAll))]
+        public async Task<IActionResult> GetAll() =>
+            Ok(await _mediatr.Send(new GetAllBrandsQuery()));
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Update(UpdateBrandCommand request) =>
             Ok(await _mediatr.Send(request));
     }
 }

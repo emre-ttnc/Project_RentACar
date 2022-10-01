@@ -35,11 +35,11 @@ public class BrandService : IBrandService
     public async Task<bool> UpdateBrand(string brandId, string brandName)
     {
         if (string.IsNullOrEmpty(brandId) || string.IsNullOrEmpty(brandName))
-            return false;
+            throw new Exception("Brand ID or new brand name cannot be null or empty");
 
         Brand? brand = await _brandReadRepository.GetByIdAsync(Guid.Parse(brandId));
-        if (brand == null || brand.BrandName == brandName)
-            return false;
+        if (brand == null) throw new Exception("Brand not found in database!");
+        if (brand.BrandName == brandName) throw new Exception("The new brand name cannot be the same as the old one."); //will go to business rules
 
         brand.BrandName = brandName;
         await _brandWriteRepository.SaveAsync();
@@ -49,11 +49,11 @@ public class BrandService : IBrandService
     public async Task<bool> RemoveBrand(string brandId)
     {
         if (string.IsNullOrEmpty(brandId) || !Guid.TryParse(brandId, out Guid guid))
-            return false;
+            throw new Exception("ID is null or empty or unsupported id type");
 
         Brand? brand = await _brandReadRepository.GetByIdAsync(guid);
         if (brand == null)
-            return false;
+            throw new Exception("Brand not found!");
 
         bool result = _brandWriteRepository.Remove(brand);
         await _brandWriteRepository.SaveAsync();
@@ -72,12 +72,9 @@ public class BrandService : IBrandService
     }
 
 
-    public async Task<BrandListModel> GetAllBrandsAsync(int page, int pageSize)
+    public async Task<BrandListModel> GetAll()
     {
-        if (page < 1 || pageSize < 1)
-            throw new Exception("Invalid request! Page or page size cannot be 0 or below.");
-
-        ICollection<Brand?> brandList = _brandReadRepository.GetAll(page, pageSize, out int totalCount, out int pageCount, out bool hasPrevious, out bool hasNext, tracking: false).ToList();
+        ICollection<Brand?> brandList = _brandReadRepository.GetAll(tracking: false).ToList();
         if (brandList.Count < 1)
             throw new Exception("Invalid request or there is no brand in database.");
 
@@ -85,13 +82,7 @@ public class BrandService : IBrandService
         {
             BrandListModel brands = new()
             {
-                Items = brandList.Select(b => new BrandListDTO() { Id = b.Id, BrandName = b.BrandName }).ToList(),
-                Count = totalCount,
-                PageCount = pageCount,
-                HasPrevious = hasPrevious,
-                HasNext = hasNext,
-                Index = page,
-                PageSize = pageSize
+                Items = brandList.Select(b => new BrandListDTO() { Id = b.Id, BrandName = b.BrandName }).ToList()
             };
             return brands;
         }
