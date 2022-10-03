@@ -22,10 +22,10 @@ public class BrandService : IBrandService
 
     public async Task<bool> AddNewBrandAsync(string brandName)
     {
-        if (!string.IsNullOrEmpty(brandName))
+        if (!string.IsNullOrEmpty(brandName.Trim()))
         {
             await _brandBusinessRules.BrandNameDuplicateControl(brandName);
-            await _brandWriteRepository.AddAsync(new(brandName));
+            await _brandWriteRepository.AddAsync(new() { Id = Guid.NewGuid(), BrandName = brandName });
             await _brandWriteRepository.SaveAsync();
             return true;
         }
@@ -61,16 +61,19 @@ public class BrandService : IBrandService
         return result;
     }
 
-    public Task<bool> AddNewBrandRangeAsync(string[] brandNames)
+    public async Task<bool> AddNewBrandRangeAsync(string[] brandNames)
     {
-        throw new NotImplementedException();
+        foreach (string brandName in brandNames)
+            await AddNewBrandAsync(brandName);
+        return true;
     }
 
-    public bool RemoveBrandRange(string[] brandNames)
+    public async Task<bool> RemoveBrandRange(string[] brandIds)
     {
-        throw new NotImplementedException();
+        foreach (string brandId in brandIds)
+            await RemoveBrand(brandId);
+        return true;
     }
-
 
     public async Task<BrandListModel> GetAll()
     {
@@ -82,7 +85,7 @@ public class BrandService : IBrandService
         {
             BrandListModel brands = new()
             {
-                Items = brandList.Select(b => new BrandListDTO() { Id = b.Id, BrandName = b.BrandName }).ToList()
+                Items = brandList.Select(b => new BrandListDTO() { Id = b.Id.ToString(), BrandName = b.BrandName }).ToList()
             };
             return brands;
         }

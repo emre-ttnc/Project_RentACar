@@ -5,7 +5,7 @@ namespace Application.Features.Commands.BrandCommands;
 
 public class UpdateBrandCommand : IRequest<bool>
 {
-    public string BrandId { get; set; } = string.Empty;
+    public string Id { get; set; } = string.Empty;
     public string BrandName { get; set; } = string.Empty;
 
     public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, bool>
@@ -18,6 +18,6 @@ public class UpdateBrandCommand : IRequest<bool>
         }
 
         public async Task<bool> Handle(UpdateBrandCommand request, CancellationToken cancellationToken) =>
-            await _brandService.UpdateBrand(request.BrandId, request.BrandName);
+            await _brandService.UpdateBrand(brandId: request.Id, brandName: request.BrandName);
     }
 }

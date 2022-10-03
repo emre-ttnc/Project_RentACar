@@ -10,7 +10,7 @@ public interface IBrandService
     Task<bool> AddNewBrandRangeAsync(string[] brandNames);
     Task<bool> UpdateBrand(string brandId,string brandName);
     Task<bool> RemoveBrand(string brandId);
-    bool RemoveBrandRange(string[] brandNames);
+    Task<bool> RemoveBrandRange(string[] brandIds);
     #endregion
 
     #region Queries

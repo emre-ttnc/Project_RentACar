@@ -19,6 +19,7 @@ public static class ServiceRegistration
         //services.AddValidatorsFromAssemblyContaining<CreateBrandCommandValidator>();
         services.AddScoped<IValidator<CreateBrandCommand>, CreateBrandCommandValidator>(); //### Manual validation.
         services.AddScoped<BrandBusinessRules>();
+        services.AddScoped<ModelBusinessRules>();
 
         return services;
     }
