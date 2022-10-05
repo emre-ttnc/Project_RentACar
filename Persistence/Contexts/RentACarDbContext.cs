@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Entities.UserEntities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Contexts;
@@ -10,6 +11,9 @@ public class RentACarDbContext : DbContext
     public DbSet<Brand>? Brands { get; set; }
     public DbSet<Model>? Models { get; set; }
     public DbSet<Car>? Cars { get; set; }
+    public DbSet<User>? Users { get; set; }
+    public DbSet<Claim>? Claims { get; set; }
+    public DbSet<UserClaim>? UserClaims { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -37,6 +41,38 @@ public class RentACarDbContext : DbContext
             car.Property(car => car.ModelYear).HasColumnName("ModelYear");
             car.Property(car => car.CarState).HasColumnName("CarState");
             car.Property(car => car.DailyPrice).HasColumnName("DailyPrice");
+        });
+
+        modelBuilder.Entity<User>(user =>
+        {
+            user.ToTable("Users").HasKey(user => user.Id);
+            user.Property(user => user.Id).HasColumnName("Id");
+            user.Property(user => user.FirstName).HasColumnName("FirstName");
+            user.Property(user => user.LastName).HasColumnName("LastName");
+            user.Property(user => user.Email).HasColumnName("Email");
+            user.Property(user => user.PasswordSalt).HasColumnName("PasswordSalt");
+            user.Property(user => user.PasswordHash).HasColumnName("PasswordHash");
+            user.Property(user => user.Status).HasColumnName("Status");
+            user.Property(user => user.AuthenticatorType).HasColumnName("AuthenticatorType");
+            user.HasMany(user => user.UserClaims).WithOne(userClaim => userClaim.User);
+
+        });
+
+        modelBuilder.Entity<UserClaim>(uc =>
+        {
+            uc.ToTable("UserClaims").HasKey(uc => uc.Id);
+            uc.Property(uc => uc.Id).HasColumnName("Id");
+            uc.Property(uc => uc.UserId).HasColumnName("UserId");
+            uc.Property(uc => uc.ClaimId).HasColumnName("ClaimId");
+            uc.HasOne(uc => uc.User).WithMany(user => user.UserClaims).HasForeignKey(userClaim => userClaim.UserId);
+        }
+            );
+
+        modelBuilder.Entity<Claim>(claim =>
+        {
+            claim.ToTable("Claims").HasKey(claim => claim.Id);
+            claim.Property(claim => claim.Id).HasColumnName("Id");
+            claim.Property(claim => claim.ClaimName).HasColumnName("ClaimName");
         });
 
         Brand[] brands = {
