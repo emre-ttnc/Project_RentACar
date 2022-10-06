@@ -1,5 +1,5 @@
 ﻿using Application.Repositories.ModelRepositories;
-using Domain.Entities;
+using Domain.Entities.CarEntities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Rules;

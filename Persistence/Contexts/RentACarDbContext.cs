@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Entities.CarEntities;
 using Domain.Entities.UserEntities;
 using Microsoft.EntityFrameworkCore;
 
@@ -75,25 +75,25 @@ public class RentACarDbContext : DbContext
             claim.Property(claim => claim.ClaimName).HasColumnName("ClaimName");
         });
 
-        Brand[] brands = {
-            new() { Id = Guid.NewGuid(), BrandName = "BMW" },
-            new() { Id = Guid.NewGuid(), BrandName = "Mercedes-Benz" }
-        };
+        //Brand[] brands = {
+        //    new() { Id = Guid.NewGuid(), BrandName = "BMW" },
+        //    new() { Id = Guid.NewGuid(), BrandName = "Mercedes-Benz" }
+        //};
 
-        Model[] models = {
-            new() { Id = Guid.NewGuid(), BrandId = brands[0].Id, ModelName = "Series 4" },
-            new() { Id = Guid.NewGuid(), BrandId = brands[0].Id, ModelName = "Series 3" },
-            new() { Id = Guid.NewGuid(), BrandId = brands[1].Id, ModelName = "A 180" }
-        };
+        //Model[] models = {
+        //    new() { Id = Guid.NewGuid(), BrandId = brands[0].Id, ModelName = "Series 4" },
+        //    new() { Id = Guid.NewGuid(), BrandId = brands[0].Id, ModelName = "Series 3" },
+        //    new() { Id = Guid.NewGuid(), BrandId = brands[1].Id, ModelName = "A 180" }
+        //};
 
-        Car[] cars = {
-            new() { Id = Guid.NewGuid(), ModelId = models[0].Id, ModelYear = 2020, DailyPrice = 1000, ImageURL = " ", CarState = Domain.Enums.CarState.Available },
-            new() { Id = Guid.NewGuid(), ModelId = models[1].Id, ModelYear = 2021, DailyPrice = 800, ImageURL = " ", CarState = Domain.Enums.CarState.Available },
-            new() { Id = Guid.NewGuid(), ModelId = models[2].Id, ModelYear = 2022, DailyPrice = 800, ImageURL = " ", CarState = Domain.Enums.CarState.Available }
-        };
+        //Car[] cars = {
+        //    new() { Id = Guid.NewGuid(), ModelId = models[0].Id, ModelYear = 2020, DailyPrice = 1000, ImageURL = " ", CarState = Domain.Enums.CarState.Available },
+        //    new() { Id = Guid.NewGuid(), ModelId = models[1].Id, ModelYear = 2021, DailyPrice = 800, ImageURL = " ", CarState = Domain.Enums.CarState.Available },
+        //    new() { Id = Guid.NewGuid(), ModelId = models[2].Id, ModelYear = 2022, DailyPrice = 800, ImageURL = " ", CarState = Domain.Enums.CarState.Available }
+        //};
 
-        modelBuilder.Entity<Brand>().HasData(brands);
-        modelBuilder.Entity<Model>().HasData(models);
-        modelBuilder.Entity<Car>().HasData(cars);
+        //modelBuilder.Entity<Brand>().HasData(brands);
+        //modelBuilder.Entity<Model>().HasData(models);
+        //modelBuilder.Entity<Car>().HasData(cars);
     }
 }

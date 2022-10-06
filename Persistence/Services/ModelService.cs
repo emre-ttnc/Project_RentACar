@@ -3,7 +3,7 @@ using Application.Features.Rules;
 using Application.Models;
 using Application.Repositories.ModelRepositories;
 using Application.Services;
-using Domain.Entities;
+using Domain.Entities.CarEntities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Services;

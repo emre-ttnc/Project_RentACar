@@ -1,11 +1,11 @@
 ﻿using Domain.Enums;
 
-namespace Domain.Entities;
+namespace Domain.Entities.CarEntities;
 
 public class Car : BaseEntity
 {
-    public Guid ModelId { get; set; }
-    public Model Model { get; set; }
+    public Guid ModelId { get; set; } = Guid.NewGuid();
+    public Model Model { get; set; } = new();
     public int ModelYear { get; set; }
     public float DailyPrice { get; set; }
     public string ImageURL { get; set; } = string.Empty;

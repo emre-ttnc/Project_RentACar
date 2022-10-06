@@ -1,5 +1,5 @@
 ﻿using Application.Repositories.ModelRepositories;
-using Domain.Entities;
+using Domain.Entities.CarEntities;
 using Persistence.Contexts;
 
 namespace Persistence.Repositories.ModelRepositories

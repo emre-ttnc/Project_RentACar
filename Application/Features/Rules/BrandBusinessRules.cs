@@ -1,5 +1,5 @@
 ﻿using Application.Repositories.BrandRepositories;
-using Domain.Entities;
+using Domain.Entities.CarEntities;
 
 namespace Application.Features.Rules;
 

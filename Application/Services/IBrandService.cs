@@ -1,5 +1,5 @@
 ﻿using Application.Models;
-using Domain.Entities;
+using Domain.Entities.CarEntities;
 
 namespace Application.Services;
 

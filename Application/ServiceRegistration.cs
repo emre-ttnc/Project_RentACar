@@ -16,10 +16,13 @@ public static class ServiceRegistration
 
         //it is not recommended
         services.AddFluentValidationAutoValidation();
+
         //services.AddValidatorsFromAssemblyContaining<CreateBrandCommandValidator>();
         services.AddScoped<IValidator<CreateBrandCommand>, CreateBrandCommandValidator>(); //### Manual validation.
+
         services.AddScoped<BrandBusinessRules>();
         services.AddScoped<ModelBusinessRules>();
+        services.AddScoped<UserBusinessRules>();
 
         return services;
     }

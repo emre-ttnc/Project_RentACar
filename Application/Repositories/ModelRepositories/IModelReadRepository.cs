@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Entities.CarEntities;
 
 namespace Application.Repositories.ModelRepositories;
 

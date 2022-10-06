@@ -1,11 +1,11 @@
-﻿namespace Domain.Entities;
+﻿namespace Domain.Entities.CarEntities;
 
 public class Model : BaseEntity
 {
-    public Guid BrandId { get; set; }
-    public Brand Brand { get; set; }
+    public Guid BrandId { get; set; } = Guid.NewGuid();
+    public Brand Brand { get; set; } = new();
     public string ModelName { get; set; } = string.Empty;
-    public virtual ICollection<Car> Cars { get; set; }
+    public virtual ICollection<Car> Cars { get; set; } = new HashSet<Car>();
 
     public Model()
     {

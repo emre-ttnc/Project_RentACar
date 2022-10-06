@@ -10,7 +10,7 @@ public class User : BaseEntity
     public byte[] PasswordSalt { get; set; } = Array.Empty<byte>();
     public byte[] PasswordHash { get; set; } = Array.Empty<byte>();
     public bool Status { get; set; }
-    public AuthenticatorType AuthenticatorType { get; set; }
+    public AuthenticatorType AuthenticatorType { get; set; } = 0;
     public ICollection<UserClaim> UserClaims { get; set; } = new HashSet<UserClaim>();
 
     public User()
