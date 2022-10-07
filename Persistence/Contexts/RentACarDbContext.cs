@@ -12,7 +12,6 @@ public class RentACarDbContext : DbContext
     public DbSet<Model>? Models { get; set; }
     public DbSet<Car>? Cars { get; set; }
     public DbSet<User>? Users { get; set; }
-    public DbSet<Claim>? Claims { get; set; }
     public DbSet<UserClaim>? UserClaims { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -63,17 +62,10 @@ public class RentACarDbContext : DbContext
             uc.ToTable("UserClaims").HasKey(uc => uc.Id);
             uc.Property(uc => uc.Id).HasColumnName("Id");
             uc.Property(uc => uc.UserId).HasColumnName("UserId");
-            uc.Property(uc => uc.ClaimId).HasColumnName("ClaimId");
+            uc.Property(uc => uc.Claim).HasColumnName("Claim");
             uc.HasOne(uc => uc.User).WithMany(user => user.UserClaims).HasForeignKey(userClaim => userClaim.UserId);
         }
             );
-
-        modelBuilder.Entity<Claim>(claim =>
-        {
-            claim.ToTable("Claims").HasKey(claim => claim.Id);
-            claim.Property(claim => claim.Id).HasColumnName("Id");
-            claim.Property(claim => claim.ClaimName).HasColumnName("ClaimName");
-        });
 
         //Brand[] brands = {
         //    new() { Id = Guid.NewGuid(), BrandName = "BMW" },

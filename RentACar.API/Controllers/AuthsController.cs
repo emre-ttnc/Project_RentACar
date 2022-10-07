@@ -1,4 +1,4 @@
-﻿using Application.Features.Commands.UserCommands;
+﻿using Application.Features.Commands.AuthCommands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,16 +6,16 @@ namespace RentACar.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UsersController : ControllerBase
+public class AuthsController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public UsersController(IMediator mediator)
+    public AuthsController(IMediator mediator)
     {
         _mediator = mediator;
     }
 
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterCommand request) =>
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginCommand request) =>
         Ok(await _mediator.Send(request));
 }

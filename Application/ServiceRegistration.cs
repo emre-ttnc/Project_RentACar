@@ -1,6 +1,7 @@
 ﻿using Application.Features.Commands.BrandCommands;
 using Application.Features.Rules;
 using Application.Features.Validators.BrandValidators;
+using Application.Helpers;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -19,6 +20,8 @@ public static class ServiceRegistration
 
         //services.AddValidatorsFromAssemblyContaining<CreateBrandCommandValidator>();
         services.AddScoped<IValidator<CreateBrandCommand>, CreateBrandCommandValidator>(); //### Manual validation.
+
+        services.AddScoped<JWTTokenHelper>();
 
         services.AddScoped<BrandBusinessRules>();
         services.AddScoped<ModelBusinessRules>();

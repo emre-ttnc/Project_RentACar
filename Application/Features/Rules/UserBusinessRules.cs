@@ -14,7 +14,7 @@ public class UserBusinessRules
 
     public async Task<bool> EmailDuplicateControl(string email)
     {
-        User? user = await _userReadRepository.GetSingleAsync(user => user.Email == email);
+        User? user = await _userReadRepository.GetSingleAsync(user => user.Email.ToLower() == email.ToLower());
 
         if(user == null)
             return true; //If there is no user with that email.

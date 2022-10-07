@@ -27,6 +27,8 @@ public static class ServiceRegistration
         services.AddScoped<IModelWriteRepository, ModelWriteRepository>();
         services.AddScoped<IUserReadRepository, UserReadRepository>();
         services.AddScoped<IUserWriteRepository, UserWriteRepository>();
+        services.AddScoped<IUserClaimReadRepository, UserClaimReadRepository>();
+        services.AddScoped<IUserClaimWriteRepository, UserClaimWriteRepository>();
 
         services.AddScoped<IBrandService, BrandService>();
         services.AddScoped<IModelService, ModelService>();

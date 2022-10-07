@@ -34,7 +34,8 @@ public class UserService : IUserService
             LastName = lastName,
             PasswordSalt = passwordSalt,
             PasswordHash = passwordHash,
-            Status = false
+            Status = false,
+            UserClaims = new List<UserClaim>() { new UserClaim() { Claim = "Customer"} }
         });
 
         await _userWriteRepository.SaveAsync();
