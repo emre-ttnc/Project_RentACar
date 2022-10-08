@@ -34,4 +34,8 @@ public class BrandsController : ControllerBase
     [HttpPost("[action]")]
     public async Task<IActionResult> Update(UpdateBrandCommand request) =>
         Ok(await _mediatr.Send(request));
+
+    [HttpPost(nameof(GetAllByDynamic))]
+    public async Task<IActionResult> GetAllByDynamic(GetAllBrandsByDynamicQuery request) =>
+        Ok(await _mediatr.Send(request));
 }

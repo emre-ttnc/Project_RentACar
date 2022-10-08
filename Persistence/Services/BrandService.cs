@@ -1,9 +1,13 @@
 ﻿using Application.DTOs.BrandDTOs;
+using Application.DTOs.ModelDTOs;
+using Application.DynamicQuery;
 using Application.Features.Rules;
 using Application.Models;
 using Application.Repositories.BrandRepositories;
 using Application.Services;
 using Domain.Entities.CarEntities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Persistence.Services;
 
@@ -79,7 +83,7 @@ public class BrandService : IBrandService
     {
         ICollection<Brand?> brandList = _brandReadRepository.GetAll(tracking: false).ToList();
         if (brandList.Count < 1)
-            throw new Exception("Invalid request or there is no brand in database.");
+            return new();
 
         return await Task.Run(() =>
         {
@@ -90,6 +94,28 @@ public class BrandService : IBrandService
             return brands;
         }
             );
+    }
+
+    public async Task<BrandListPageableModel> GetAllByDynamic(Dynamic dynamic, int page, int size, Func<IQueryable<Brand>, IIncludableQueryable<Brand, object>>? include = null)
+    {
+        ICollection<Brand?> brandList = await _brandReadRepository.GetAllWithDynamic(dynamic, page, size, out int totalCount, out int PageCount, out bool hasPrevious, out bool hasNext, tracking: false, include: include).ToListAsync();
+        if (brandList.Count < 1)
+            return new();
+        return await Task.Run(() =>
+        {
+            BrandListPageableModel brands = new() { 
+                Items = brandList.Select(b => new BrandListDTO() { Id = b.Id.ToString(), BrandName = b.BrandName, Models = b.Models.Select(
+                    m => new ModelListDTO(){ Id = m.Id.ToString(), ModelName = m.ModelName, BrandName = m.Brand.BrandName }
+                    ).ToList() }).ToList(),
+                Count = totalCount,
+                HasPrevious = hasPrevious,
+                HasNext = hasNext,
+                PageCount = PageCount,
+                PageSize = size,
+                Index = page
+            };
+            return brands;
+        });
     }
 
     public Task<Brand> GetSingleBrandAsync(string brandId)

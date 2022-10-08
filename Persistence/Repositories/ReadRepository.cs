@@ -1,6 +1,8 @@
-﻿using Application.Repositories;
+﻿using Application.DynamicQuery;
+using Application.Repositories;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Persistence.Contexts;
 using System.Linq.Expressions;
 
@@ -27,7 +29,23 @@ public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity
         pageCount = totalCount > pageSize ? totalCount / pageSize + 1 : 1;
         hasPrevious = page > 1;
         hasNext = page * pageSize < totalCount;
-        return tracking ? Table.AsQueryable().Skip((page-1) * pageSize).Take(pageSize) : Table.AsNoTracking().AsQueryable().Skip((page-1) * pageSize).Take(pageSize);
+        return tracking ? Table.AsQueryable().Skip((page - 1) * pageSize).Take(pageSize) : Table.AsNoTracking().AsQueryable().Skip((page - 1) * pageSize).Take(pageSize);
+    }
+
+    public IQueryable<T?> GetAllWithDynamic(
+        Dynamic dynamic,
+        int page, int pageSize, out int totalCount, out int pageCount, out bool hasPrevious, out bool hasNext,
+        bool tracking = true,
+        Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
+    {
+        IQueryable<T> queryable = Table.AsQueryable().ToDynamic(dynamic);
+        if (!tracking) queryable.AsNoTracking();
+        if (include is not null) queryable = include(queryable);
+        totalCount = queryable.Count();
+        pageCount = totalCount > pageSize ? (totalCount % pageSize is 0) ? totalCount / pageSize : totalCount / pageSize + 1 : 1;
+        hasPrevious = page > 1;
+        hasNext = page * pageSize < totalCount;
+        return queryable.Skip((page - 1) * pageSize).Take(pageSize);
     }
 
     public async Task<T?> GetByIdAsync(Guid id, bool tracking = true) =>
