@@ -26,7 +26,7 @@ public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity
     public IQueryable<T?> GetAllWithPaginate(int page, int pageSize, out int totalCount, out int pageCount, out bool hasPrevious, out bool hasNext, bool tracking = true)
     {
         totalCount = Table.Count();
-        pageCount = totalCount > pageSize ? totalCount / pageSize + 1 : 1;
+        pageCount = (totalCount % pageSize is 0) ? totalCount / pageSize : totalCount / pageSize + 1;
         hasPrevious = page > 1;
         hasNext = page * pageSize < totalCount;
         return tracking ? Table.AsQueryable().Skip((page - 1) * pageSize).Take(pageSize) : Table.AsNoTracking().AsQueryable().Skip((page - 1) * pageSize).Take(pageSize);
@@ -42,7 +42,7 @@ public class ReadRepository<T> : IReadRepository<T> where T : BaseEntity
         if (!tracking) queryable.AsNoTracking();
         if (include is not null) queryable = include(queryable);
         totalCount = queryable.Count();
-        pageCount = totalCount > pageSize ? (totalCount % pageSize is 0) ? totalCount / pageSize : totalCount / pageSize + 1 : 1;
+        pageCount = (totalCount % pageSize is 0) ? totalCount / pageSize : totalCount / pageSize + 1;
         hasPrevious = page > 1;
         hasNext = page * pageSize < totalCount;
         return queryable.Skip((page - 1) * pageSize).Take(pageSize);

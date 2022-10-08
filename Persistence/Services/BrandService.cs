@@ -105,8 +105,9 @@ public class BrandService : IBrandService
         {
             BrandListPageableModel brands = new() { 
                 Items = brandList.Select(b => new BrandListDTO() { Id = b.Id.ToString(), BrandName = b.BrandName, Models = b.Models.Select(
-                    m => new ModelListDTO(){ Id = m.Id.ToString(), ModelName = m.ModelName, BrandName = m.Brand.BrandName }
-                    ).ToList() }).ToList(),
+                    m => new ModelListDTO() { Id = m.Id.ToString(), ModelName = m.ModelName, BrandName = m.Brand.BrandName, Cars = m.Cars.Select(
+                        c => new Application.DTOs.CarDTOs.CarListDTO() { Id = c.Id.ToString(), DailyPrice = c.DailyPrice, ModelYear = c.ModelYear, CarState=c.CarState, ImageURL = c.ImageURL }).ToList()
+                    }).ToList() }).ToList(),
                 Count = totalCount,
                 HasPrevious = hasPrevious,
                 HasNext = hasNext,

@@ -22,7 +22,12 @@ public class GetAllBrandsByDynamicQuery : IRequest<BrandListPageableModel>
             _brandService = brandService;
         }
 
-        public async Task<BrandListPageableModel> Handle(GetAllBrandsByDynamicQuery request, CancellationToken cancellationToken) =>
-            await _brandService.GetAllByDynamic(dynamic: request.Dynamic, page: request.Page, size: request.Size, include: q => q.Include(b => b.Models));
+        public async Task<BrandListPageableModel> Handle(GetAllBrandsByDynamicQuery request, CancellationToken cancellationToken)
+        {
+            if(request.Page < 1 || request.Size < 1)
+                return new BrandListPageableModel();
+
+            return await _brandService.GetAllByDynamic(dynamic: request.Dynamic, page: request.Page, size: request.Size, include: q => q.Include(b => b.Models).ThenInclude(m => m.Cars));
+        }
     }
 }
